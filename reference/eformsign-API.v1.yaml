@@ -14,7 +14,8 @@ paths:
         required: true
     get:
       summary: 문서정보 조회
-      tags: []
+      tags:
+        - eformsign
       responses:
         '200':
           description: OK
@@ -101,7 +102,9 @@ paths:
                     description: 수신자들 정보
                     type: array
                     items:
-                      type: object
+                      type:
+                        - object
+                        - string
                       properties:
                         recipient_type:
                           type: string
@@ -385,7 +388,7 @@ paths:
               type: object
               properties: {}
         description: ''
-  '/api/documents/{DOCUMENT_ID}/download_files':
+  '/api/documents/{DOCUMENT_ID}/download_attach_filesdownload_files':
     parameters:
       - schema:
           type: string
@@ -394,7 +397,8 @@ paths:
         required: true
     get:
       summary: '문서 파일 다운로드(문서 PDF, 감사파일증명 PDF)'
-      tags: []
+      tags:
+        - eformsign
       responses:
         '200':
           description: OK
@@ -449,7 +453,8 @@ paths:
         required: true
     get:
       summary: 문서 첨부 파일 다운로드
-      tags: []
+      tags:
+        - eformsign
       responses:
         '200':
           description: OK
@@ -490,46 +495,7 @@ paths:
           description: Bearer <access_token>
           required: true
 components:
-  schemas:
-    User:
-      title: User
-      type: object
-      description: ''
-      x-examples:
-        Alice Smith:
-          id: 142
-          firstName: Alice
-          lastName: Smith
-          email: alice.smith@gmail.com
-          dateOfBirth: '1997-10-31'
-          emailVerified: true
-          signUpDate: '2019-08-24'
-      properties:
-        id:
-          type: integer
-          description: Unique identifier for the given user.
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        dateOfBirth:
-          type: string
-          format: date
-          example: '1997-10-31'
-        emailVerified:
-          type: boolean
-          description: Set to true if the user's email has been verified.
-        createDate:
-          type: string
-          format: date
-          description: The date that the user was created.
-      required:
-        - id
-        - firstName
-        - lastName
-        - email
-        - emailVerified
+  schemas: {}
   securitySchemes: {}
+tags:
+  - name: eformsign
