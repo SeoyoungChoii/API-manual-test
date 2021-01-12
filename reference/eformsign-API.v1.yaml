@@ -5,144 +5,6 @@ info:
 servers:
   - url: 'http://api.eformsign.com/v2.0'
 paths:
-  '/users/{userId}':
-    parameters:
-      - schema:
-          type: integer
-        name: userId
-        in: path
-        required: true
-        description: Id of an existing user.
-    get:
-      summary: Get User Info by User ID
-      tags: []
-      responses:
-        '200':
-          description: User Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Get User Alice Smith:
-                  value:
-                    id: 142
-                    firstName: Alice
-                    lastName: Smith
-                    email: alice.smith@gmail.com
-                    dateOfBirth: '1997-10-31'
-                    emailVerified: true
-                    signUpDate: '2019-08-24'
-        '404':
-          description: User Not Found
-      operationId: get-users-userId
-      description: Retrieve the information of the user with the matching user ID.
-    patch:
-      summary: Update User Information
-      operationId: patch-users-userId
-      responses:
-        '200':
-          description: User Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Updated User Rebecca Baker:
-                  value:
-                    id: 13
-                    firstName: Rebecca
-                    lastName: Baker
-                    email: rebecca@gmail.com
-                    dateOfBirth: '1985-10-02'
-                    emailVerified: false
-                    createDate: '2019-08-24'
-        '404':
-          description: User Not Found
-        '409':
-          description: Email Already Taken
-      description: Update the infromation of an existing user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                  description: 'If a new email is given, the user''s email verified property will be set to false.'
-                dateOfBirth:
-                  type: string
-            examples:
-              Update First Name:
-                value:
-                  firstName: Rebecca
-              Update Email:
-                value:
-                  email: rebecca@gmail.com
-              Update Last Name & Date of Birth:
-                value:
-                  lastName: Baker
-                  dateOfBirth: '1985-10-02'
-        description: Patch user properties to update.
-  /user:
-    post:
-      summary: Create New User
-      operationId: post-user
-      responses:
-        '200':
-          description: User Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    id: 12
-                    firstName: Bob
-                    lastName: Fellow
-                    email: bob.fellow@gmail.com
-                    dateOfBirth: '1996-08-24'
-                    emailVerified: false
-                    createDate: '2020-11-18'
-        '400':
-          description: Missing Required Information
-        '409':
-          description: Email Already Taken
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                dateOfBirth:
-                  type: string
-                  format: date
-              required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
-            examples:
-              Create User Bob Fellow:
-                value:
-                  firstName: Bob
-                  lastName: Fellow
-                  email: bob.fellow@gmail.com
-                  dateOfBirth: '1996-08-24'
-        description: Post the necessary fields for the API to create a new user.
-      description: Create a new user.
   '/api/documents/{DOCUMENT_ID}':
     parameters:
       - schema:
@@ -198,10 +60,181 @@ paths:
                       creator.recipient_type:
                         type: string
                         description: 수신자 타입
-                      cre:
+                      created_date:
+                        type: integer
+                        format: int64
+                        description: 생성일
+                  last_editor:
+                    type: object
+                    description: '문서 수정자 정보(id, name 포함)'
+                    properties:
+                      last_editor.id:
                         type: string
-                  '':
-                    type: string
+                        description: 수정자 id
+                      last_editor.name:
+                        type: string
+                        description: 수정자 명
+                      last_editor.recipient_type:
+                        type: string
+                        description: 수신자 타입
+                      updated_date:
+                        type: integer
+                        format: int64
+                        description: 문서 수정일
+                  current_status:
+                    type: object
+                    description: 현재 상태 정보
+                    properties:
+                      current_status.status_type:
+                        type: string
+                        description: 상태 타입
+                      current_status.step_type:
+                        type: string
+                        description: 스탭 타입
+                      step_index:
+                        type: number
+                        description: 스탭 index
+                      step_name:
+                        type: string
+                        description: 스탭 명
+                  step_recipients:
+                    description: 수신자들 정보
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        'step_recipients[].recipient_type':
+                          type: string
+                          description: 수신자 타입
+                        'step_recipients[].id':
+                          type: string
+                          description: 수신자 id
+                        'step_recipients[].name':
+                          type: string
+                          description: 수신자 명
+                  fields:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        'fields[].id':
+                          type: string
+                          description: 필드 id
+                        'fields[].value':
+                          type: string
+                          description: 필드 값
+                        'fields[].type':
+                          type: string
+                          description: 필드의 데이터 타입
+                  previous_status:
+                    type: array
+                    description: 이전 상태 정보
+                    items:
+                      type: object
+                      properties:
+                        'previous_status[].step_type':
+                          type: string
+                          description: 스탭 ㅌ
+                        'previous_status[].step_name':
+                          type: string
+                          description: 스탭 명
+                        'previous_status[].action_type':
+                          type: string
+                          description: 액션 타입
+                        'previous_status[].executor':
+                          type: object
+                          description: 수행자 정보
+                          properties:
+                            'previous_status[].executor.recipient_type':
+                              type: string
+                              description: 수행자 타입
+                            'previous_status[].executor.id':
+                              type: string
+                              description: 수행자 id
+                            'previous_status[].executor.name':
+                              type: string
+                              description: 수행자 이름
+                            'previous_status[].executed_date':
+                              type: integer
+                              format: int64
+                              description: 수행 날짜
+                  next_status:
+                    type: array
+                    description: 다음 상태 정보
+                    items:
+                      type: object
+                      properties:
+                        'next_status[].step_type':
+                          type: string
+                          description: 스탭 타입
+                        'next_status[].step_name':
+                          type: string
+                          description: 스탭 명
+                        'next_status[].step_recipients':
+                          type: object
+                          description: 수신자들 정보
+                          properties:
+                            'next_status[].step_recipients.recipient_type':
+                              type: string
+                              description: 수신자 타입
+                            'next_status[].step_recipients.id':
+                              type: string
+                              description: 수신자 id
+                            'next_status[].step_recipients.name':
+                              type: string
+                              description: 수신자 이름
+                  histories:
+                    type: array
+                    description: 히스토리 정보
+                    items:
+                      type: object
+                      properties:
+                        'histories[].step_type':
+                          type: string
+                          description: 스탭 타입
+                        'histories[].action_type':
+                          type: string
+                          description: 액션 타입
+                        'histories[].executor':
+                          type: object
+                          description: 수행자 정보
+                          properties:
+                            'histories[].executor.recipient_type':
+                              type: string
+                              description: 수행자 타입
+                            'histories[].executor.id':
+                              type: string
+                              description: ''
+                            'histories[].executor.name':
+                              type: string
+                              format: int64
+                              description: 수행자 이름
+                            'histories[].executor_date':
+                              type: integer
+                              format: int64
+                              description: 수행 날짜
+              examples:
+                example-1:
+                  value:
+                    id: 1e9c508486d149d8a402a4357c7533a2
+                    template:
+                      id: f261bba9d4d343ebb67bc1a839f8feff
+                      name: 물품 구매 요청서
+                      document_name: string
+                      document_number: string
+                    creator:
+                      creator.id: string
+                      creator.name: string
+                      creator.recipient_type: string
+                      created_date: 0
+                    last_editor:
+                      last_editor.id: string
+                      last_editor.name: string
+                      last_editor.recipient_type: string
+                      updated_date: 0
+                    current_status:
+                      current_status.status_type: string
+                      current_status.step_type: string
             application/xml:
               schema:
                 type: object
@@ -213,8 +246,21 @@ paths:
               schema:
                 type: object
                 properties:
-                  '':
+                  code:
                     type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                example-1:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+            application/xml:
+              schema:
+                type: object
+                properties: {}
       operationId: get-api-documents-DOCUMENT_ID
       description: '문서의 일반정보, 상세정보, 이력, 진행상황 등을 조회합니다.'
       parameters:
@@ -230,32 +276,24 @@ paths:
           name: Authorization
           description: Bearer <access_token>
           required: true
-        - schema:
-            type: boolean
-          in: query
-          name: include_fields
-          description: 'default는 false, 필요시 true로 요청'
-        - schema:
-            type: boolean
-          in: query
-          name: include_histories
-          description: 'default는 false, 필요시 true로 요청'
-        - schema:
-            type: boolean
-          in: query
-          name: include_previous_status
-          description: 'default는 false, 필요시 true로 요청'
-        - schema:
-            type: boolean
-          in: query
-          name: include_next_status
-          description: 'default는 false, 필요시 true로 요청'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: {}
+              properties:
+                include_fields:
+                  type: boolean
+                  description: 'default는 false, 필요시 true로 요청'
+                include_histories:
+                  type: boolean
+                  description: 'fault는 false, 필요시 true로 요청'
+                include_previous_status:
+                  type: boolean
+                  description: 'default는 false, 필요시 true로 요청'
+                include_next_status:
+                  type: boolean
+                  description: 'default는 false, 필요시 true로 요청'
           application/xml:
             schema:
               type: object
@@ -265,6 +303,14 @@ paths:
               type: object
               properties: {}
           text/html:
+            schema:
+              type: object
+              properties: {}
+          text/plain:
+            schema:
+              type: object
+              properties: {}
+          application/EDI-X12:
             schema:
               type: object
               properties: {}
