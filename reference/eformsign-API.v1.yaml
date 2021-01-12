@@ -157,11 +157,64 @@ paths:
         '200':
           description: OK
           headers:
-            header-0:
+            Content-Type:
               schema:
                 type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: 문서 id
+                  template:
+                    type: object
+                    description: 템플릿 정보
+                    properties:
+                      template.id:
+                        type: string
+                        description: 템플릿 id
+                      template.name:
+                        type: string
+                        description: 템플릿 명
+                      document_name:
+                        type: string
+                        description: 문서 제목
+                      document_number:
+                        type: string
+                        description: 문서 번호
+                  creator:
+                    type: object
+                    description: '문서 생성자 정보(id, name 포함)'
+                    properties:
+                      creator.id:
+                        type: string
+                        description: 문서 생성자 id
+                      creator.name:
+                        type: string
+                        description: 생성자 명
+                      creator.recipient_type:
+                        type: string
+                        description: 수신자 타입
+                      cre:
+                        type: string
+                  '':
+                    type: string
+            application/xml:
+              schema:
+                type: object
+                properties: {}
         '403':
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  '':
+                    type: string
       operationId: get-api-documents-DOCUMENT_ID
       description: '문서의 일반정보, 상세정보, 이력, 진행상황 등을 조회합니다.'
       parameters:
@@ -180,21 +233,42 @@ paths:
         - schema:
             type: boolean
           in: query
+          name: include_fields
+          description: 'default는 false, 필요시 true로 요청'
         - schema:
             type: boolean
           in: query
+          name: include_histories
+          description: 'default는 false, 필요시 true로 요청'
         - schema:
             type: boolean
           in: query
+          name: include_previous_status
+          description: 'default는 false, 필요시 true로 요청'
         - schema:
             type: boolean
           in: query
+          name: include_next_status
+          description: 'default는 false, 필요시 true로 요청'
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties: {}
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+          text/html:
+            schema:
+              type: object
+              properties: {}
+        description: ''
 components:
   schemas:
     User:
