@@ -440,6 +440,50 @@ paths:
           name: file_type
           description: '다운로드 받을 파일 타입으로 document, audit_trail (, 구분자로 둘다 사용 가능)'
           required: true
+  '/api/documents/{DOCUMENT_ID}/download_attach_files':
+    parameters:
+      - schema:
+          type: string
+        name: DOCUMENT_ID
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/zip
+            Content-disposition:
+              schema:
+                type: string
+              description: '예시 attachment; filename={document_id}.zip;'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+      operationId: get-api-documents-DOCUMENT_ID-download_attach_files
+      description: 문서의 첨부된 파일을 다운로드합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Bearer <access_token>
+          required: true
 components:
   schemas:
     User:
