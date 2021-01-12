@@ -223,9 +223,9 @@ paths:
                       document_name: string
                       document_number: string
                     creator:
-                      creator.id: string
-                      creator.name: string
-                      creator.recipient_type: string
+                      id: john@forcs.com
+                      name: jonh
+                      creator.recipient_type: '01'
                       created_date: 0
                     last_editor:
                       last_editor.id: string
@@ -276,24 +276,31 @@ paths:
           name: Authorization
           description: Bearer <access_token>
           required: true
+        - schema:
+            type: boolean
+          in: query
+          name: include_fields
+          description: 'default는 false, 필요시 true로 요청'
+        - schema:
+            type: boolean
+          in: query
+          description: 'default는 false, 필요시 true로 요청'
+          name: include_histories
+        - schema:
+            type: boolean
+          in: query
+          description: 'default는 false, 필요시 true로 요청'
+          name: include_previous_status
+        - schema:
+            type: boolean
+          in: query
+          description: 'default는 false, 필요시 true로 요청'
+          name: include_next_status
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties:
-                include_fields:
-                  type: boolean
-                  description: 'default는 false, 필요시 true로 요청'
-                include_histories:
-                  type: boolean
-                  description: 'fault는 false, 필요시 true로 요청'
-                include_previous_status:
-                  type: boolean
-                  description: 'default는 false, 필요시 true로 요청'
-                include_next_status:
-                  type: boolean
-                  description: 'default는 false, 필요시 true로 요청'
           application/xml:
             schema:
               type: object
