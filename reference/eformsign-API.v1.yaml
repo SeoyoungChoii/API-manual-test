@@ -322,20 +322,11 @@ paths:
                 type: object
                 properties: {}
       operationId: get-api-documents-DOCUMENT_ID
-      description: '문서의 일반정보, 상세정보, 이력, 진행상황 등을 조회합니다.'
+      description: |-
+        문서의 일반정보, 상세정보, 이력, 진행상황 등을 조회합니다.
+        *참고: http://wiki.oz4cs.com/display/eformsignapi/2.2.3+Open+API
       parameters:
-        - schema:
-            type: string
-          in: header
-          name: Content-Type
-          description: application/json
-          required: true
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: Bearer <access_token>
-          required: true
+        - in: unknown
         - schema:
             type: boolean
           in: query
@@ -356,6 +347,18 @@ paths:
           in: query
           description: 'default는 false, 필요시 true로 요청'
           name: include_next_status
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          required: true
+          description: application/json
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Bearer <access_token>
+          required: true
       requestBody:
         content:
           application/json:
@@ -382,6 +385,61 @@ paths:
               type: object
               properties: {}
         description: ''
+  '/api/documents/{DOCUMENT_ID}/download_files':
+    parameters:
+      - schema:
+          type: string
+        name: DOCUMENT_ID
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: 'pdf 파일 한개 일경우 application/pdf,  pdf 파일이 여러 개일 경우 application/zip'
+            Content-disposition:
+              schema:
+                type: string
+              description: 예시 attachment; filename=윤승환 휴가 신청서.pdf;
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                example-1:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+      operationId: get-api-documents-DOCUMENT_ID-download_files
+      description: 문서의 파일을 다운로드합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Bearer <access_token>
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: file_type
+          description: '다운로드 받을 파일 타입으로 document, audit_trail (, 구분자로 둘다 사용 가능)'
+          required: true
 components:
   schemas:
     User:
