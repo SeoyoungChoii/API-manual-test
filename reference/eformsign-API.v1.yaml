@@ -13,7 +13,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: 문서정보 조회
       tags: []
       responses:
         '200':
@@ -214,7 +214,7 @@ paths:
                               format: int64
                               description: 수행 날짜
               examples:
-                example-1:
+                성공 시:
                   value:
                     id: 1e9c508486d149d8a402a4357c7533a2
                     template:
@@ -313,7 +313,7 @@ paths:
                     type: string
                     description: 에러 메시지
               examples:
-                example-1:
+                실패 시:
                   value:
                     code: '4030001'
                     ErrorMessage: invalid api key
@@ -393,7 +393,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: '문서 파일 다운로드(문서 PDF, 감사파일증명 PDF)'
       tags: []
       responses:
         '200':
@@ -421,7 +421,7 @@ paths:
                     type: string
                     description: 에러 메시지
               examples:
-                example-1:
+                실패 시:
                   value:
                     code: '4030001'
                     ErrorMessage: invalid api key
@@ -448,7 +448,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: 문서 첨부 파일 다운로드
       tags: []
       responses:
         '200':
@@ -475,6 +475,11 @@ paths:
                   ErrorMessage:
                     type: string
                     description: 에러 메시지
+              examples:
+                실패 시:
+                  value:
+                    code: string
+                    ErrorMessage: string
       operationId: get-api-documents-DOCUMENT_ID-download_attach_files
       description: 문서의 첨부된 파일을 다운로드합니다.
       parameters:
