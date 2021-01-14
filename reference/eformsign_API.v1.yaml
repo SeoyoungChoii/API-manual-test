@@ -1015,6 +1015,11 @@ paths:
                   ErrorMessage:
                     type: string
                     description: 에러 메시지
+              examples:
+                example-1:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
       operationId: get-api-documents-DOCUMENT_ID-download_files
       description: |-
         문서의 파일을 다운로드 합니다.
