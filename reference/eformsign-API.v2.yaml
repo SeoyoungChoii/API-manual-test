@@ -102,19 +102,14 @@ paths:
                     description: 수신자들 정보
                     type: array
                     items:
-                      type:
-                        - object
-                        - string
+                      type: object
                       properties:
-                        recipient_type:
+                        "recipient_type\t":
                           type: string
-                          description: 수신자 타입
                         id:
                           type: string
-                          description: 수신자 id
                         name:
                           type: string
-                          description: 수신자 명
                   fields:
                     type: array
                     items:
@@ -216,88 +211,7 @@ paths:
                               type: integer
                               format: int64
                               description: 수행 날짜
-              examples:
-                성공 시:
-                  value:
-                    id: 1e9c508486d149d8a402a4357c7533a2
-                    template:
-                      id: f261bba9d4d343ebb67bc1a839f8feff
-                      name: 물품 구매 요청서
-                    document_name: 제작 요청서
-                    document_number: 구매 NO.1
-                    creator:
-                      recipient_type: '01'
-                      id: john@forcs.com
-                      name: jonh
-                    created_date: 1477385802676
-                    last_editor:
-                      recipient_type: '01'
-                      id: smith@forcs.com
-                      name: smith
-                    updated_date: 1477385802676
-                    current_status:
-                      status_type: '01'
-                      step_type: '04'
-                      step_index: 3
-                      step_name: 내부 수신자
-                      step_recipients:
-                        - recipient_type: '01'
-                          id: smith@forcs.com
-                          name: smith
-                        - recipient_type: '02'
-                          name: john
-                          email: john@forcs.com
-                          sms: '+821012341234'
-                    fields:
-                      - id: name
-                        value: john
-                        type: String
-                      - id: address
-                        value: '646, Nonhyeon-ro, Gangnam-gu, Seoul, Korea '
-                        type: String
-                    previous_status:
-                      - step_type: '00'
-                        step_name: write
-                        action_type: '01'
-                        executor:
-                          recipient_type: '01'
-                          id: john@focs.com
-                          name: john
-                        executed_date: 1213123213
-                    next_status:
-                      - status_type: '01'
-                        step_type: '02'
-                        step_name: approve
-                        step_recipients:
-                          - recipient_type: '01'
-                            id: smith@forcs.com
-                            name: smith
-                      - status_type: '01'
-                        step_type: '03'
-                        step_name: external recipient
-                        step_recipients:
-                          - recipient_type: '02'
-                            name: james
-                            sms: '+821012341224'
-                      - status_type: '03'
-                        step_type: '01'
-                        step_name: complete
-                        step_recipients: []
-                    histories:
-                      - step_type: '00'
-                        action_type: '01'
-                        executor:
-                          recipient_type: '01'
-                          id: john@focs.com
-                          name: john
-                        executed_date: 1477385802676
-                      - step_type: '00'
-                        action_type: '02'
-                        executor:
-                          recipient_type: '01'
-                          id: aaa@focs.com
-                          name: 홍길동
-                        executed_date: 1477385802676
+              examples: {}
             application/xml:
               schema:
                 type: object

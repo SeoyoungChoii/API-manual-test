@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: eformsign_API.v1
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /api_auth/access_token:
+    post:
+      summary: ''
+      operationId: post-api_auth-access_token
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_key:
+                    type: object
+                    description: ' API Key 정보 객체(name, alias, company 포함)'
+                    properties:
+                      name:
+                        type: string
+                        description: API Key 이름
+                      alias:
+                        type: string
+                        description: API Key 별칭
+                      company:
+                        type: object
+                        description: 'API Key 회사 정보 객체(id, name, api_url 포함)'
+                        properties:
+                          id:
+                            type: string
+                            description: 회사 id
+                          name:
+                            type: string
+                            description: 회사명
+                          api_url:
+                            type: string
+                            description: 해당 회사 서비스 API URL
+                  oauth_token:
+                    type: object
+                    description: '토큰 정보 객체 (token_type, access_token, refresh_token, expires_in 포함)'
+                    properties:
+                      token_type:
+                        type: string
+                        description: '토큰 타입, JWT 고정'
+                      access_token:
+                        type: string
+                        description: access token
+                      refresh_token:
+                        type: string
+                        description: refresh token
+                      expires_in:
+                        type: integer
+                        description: Access token 유효시간(초)으로 Access token 발급 시점부터 expires_in 시간까지만 유효
+              examples:
+                성공시:
+                  value:
+                    api_key:
+                      name: access key
+                      alias: access Key alias
+                      company:
+                        company_id: 129jd93j29jd9j29jd
+                        name: Forcs
+                        api_url: 'https://kr-api.eformsign.com'
+                    oauth_token:
+                      token_type: JWT
+                      access_token: eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJvY2UuaWFtIiwiY29udGV4dCI6eyJjbGllbnRJZCI6IjE5MzEyYWI2NWQxMTQ4NjY4ZDJiNjFjYjZjY ...
+                      refresh_token: dcaf137b-e93e-4207-ba8a-2dd5a1250c45
+                      expires_in: 3600
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+                  execution_time:
+                    type: integer
+                    format: int64
+                    description: 서버 현재시간으로 code가 4000002일 경우에만 추가됨
+              examples:
+                실패시:
+                  value:
+                    code: '4000002'
+                    ErrorMessage: The validation time has expired.
+                    execution_time: 1600247345051
+                실패시 2:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+      description: API Key로 Access Token을 발급받을 수 있습니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: eformsign_signature
+          description: execution_time 값을 private Key로 서명한 값  (2.1.2 eformsign_signature 생성 참고)
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: api_key
+          description: api_key
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                execution_time:
+                  type: integer
+                  description: API 호출시간(현재시간)으로 서버시간의 +/-30초 내에서만 호출이 유효함
+                member_id:
+                  type: string
+                  description: 회사 멤버의 ID로 멤버의 Access token을 발급받을 때 추가로 입력함
+              required:
+                - execution_time
+components:
+  schemas: {}
