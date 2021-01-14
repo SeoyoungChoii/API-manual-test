@@ -142,5 +142,94 @@ paths:
                   description: 회사 멤버의 ID로 멤버의 Access token을 발급받을 때 추가로 입력함
               required:
                 - execution_time
+  /api_auth/refresh_token:
+    post:
+      summary: ''
+      operationId: post-api_auth-refresh_token
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  oauth_token:
+                    type: object
+                    description: '토큰 정보 객체(token_type, access_token, refresh_token, expires_in 포함)'
+                    properties:
+                      token_type:
+                        type: string
+                        description: '토큰 타입, JWT 고정'
+                      access_token:
+                        type: string
+                        description: access token
+                      refresh_token:
+                        type: string
+                        description: refresh token
+                      expires_in:
+                        type: integer
+                        description: Access token 유효시간(초)으로 Access token 발급 시점부터 expires_in 시간까지만 유효
+              examples:
+                성공시:
+                  value:
+                    oauth_token:
+                      token_type: JWT
+                      access_token: eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJvY2UuaWFtIiwiY29udGV4dCI6eyJjbGllbnRJZCI6IjE5MzEyYWI2NWQxMTQ4N...
+                      refresh_token: 03a54d50-f0a2-4db6-9f1a-02b3e6d9a68f
+                      expires_in: 3600
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                실패시:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+      description: Access Token을 갱신합니다.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+                  description: Access Token 갱신을 위한 Refresh Token
+              required:
+                - refresh_token
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: access_token
+          description: "eformsign에서 발급받은 access_Token\t"
+          required: true
 components:
   schemas: {}
