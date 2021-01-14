@@ -231,5 +231,172 @@ paths:
           name: access_token
           description: "eformsign에서 발급받은 access_Token\t"
           required: true
+  '/api/documents/{DOCUMENT_ID}':
+    parameters:
+      - schema:
+          type: string
+        name: DOCUMENT_ID
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: 문서 id
+                  template_id:
+                    type: string
+                    description: 템플릿 id
+                  template_name:
+                    type: string
+                    description: 템플릿 명
+                  template_version:
+                    type: integer
+                    description: 템플릿 버전
+                  title:
+                    type: string
+                    description: 문서 제목
+                  creator:
+                    type: object
+                    description: '문서 생성자 객체(id, name 포함) 정보'
+                    properties:
+                      id:
+                        type: string
+                        description: 문서 생성자 id
+                      name:
+                        type: string
+                        description: 문서 생성자 명
+                  created_date:
+                    type: string
+                    description: 문서 생성일
+                  editor:
+                    type: object
+                    description: '문서 수정자 객체(id, name 포함) 정보'
+                    properties:
+                      id:
+                        type: string
+                        description: 문서 수정자 id
+                      name:
+                        type: string
+                        description: 문서 수정자 명
+                  updated_date:
+                    type: integer
+                    format: int64
+                    description: 문서 수정일
+                  current_status:
+                    type: string
+                    description: |-
+                      doc_create(문서 생성),
+                      doc_tempsave (문서 임시 저장),
+                      doc_request_approval (결재 요청),
+                      doc_accept_approval (결재 승인),
+                      doc_reject_approval (결재 반려),
+                      doc_request_external (외부자 요청),
+                      doc_remind_external (외부자 재요청),
+                      doc_open_external (외부자 열람),
+                      doc_accept_external (외부자 승인),
+                      doc_reject_external (외부자 반려),
+                      doc_request_internal (내부자 요청),
+                      doc_accept_internal (내부자 승인),
+                      doc_reject_internal (내부자 반려),
+                      doc_tempsave_internal (내부자 임시 저장),
+                      doc_cancel_request (요청 취소),
+                      doc_reject_request (반려 요청),
+                      doc_decline_cancel_request (반려 요청 거절),
+                      doc_delete_request(삭제 요청),
+                      doc_decline_delete_request (삭제 요청 거절),
+                      doc_deleted (문서 삭제),
+                      doc_complete (문서 완료)
+                  user_defined_status:
+                    type: string
+                    description: 사용자가 지정한 문서의 상태 값
+                  workflow_step_type:
+                    type: string
+                    description: 워크플로우 단계 타입
+                  workflow_step_name:
+                    type: string
+                    description: 워크플로우 단계 명
+                  data_list:
+                    type: object
+                    description: '사용자 입력 데이터로 입력값의 form_id : value 형식으로 데이터가 표시'
+              examples:
+                성공시:
+                  value:
+                    id: 1e9c508486d149d8a402a4357c7533a2
+                    template_id: f261bba9d4d343ebb67bc1a839f8feff
+                    template_name: 물품 구매 요청서
+                    template_version: 1
+                    document_number: 구매 NO.1
+                    title: 제작 요청서
+                    creator:
+                      id: test1@forcs.com
+                      name: 홍길동
+                    created_date: 1477385802676
+                    editor:
+                      id: test1@forcs.com
+                      name: 홍길동
+                    updated_date: 1477385802676
+                    current_status: doc_request_approval
+                    user_defined_status: 주문요청
+                    workflow_step_type: approval
+                    workflow_step_name: 결재
+                    data_list:
+                      name: 홍길동
+                      address: 강남구 논현동 646
+                      product: 명함
+                      memo: 빠른 시일내에 제작해 주세요
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                실패시:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+      operationId: get-api-documents-DOCUMENT_ID
+      description: |-
+        문서 정보를 조회합니다.
+        *도메일은 Access Token 발급된 company.api_url 값을 사용해야 합니다. 
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: access_token
+          description: Access token
+          required: true
 components:
   schemas: {}
