@@ -7,7 +7,7 @@ servers:
 paths:
   /api_auth/access_token:
     post:
-      summary: ''
+      summary: API Key Access Token 발급
       operationId: post-api_auth-access_token
       responses:
         '200':
@@ -144,7 +144,7 @@ paths:
                 - execution_time
   /api_auth/refresh_token:
     post:
-      summary: ''
+      summary: API Key Refresh Token
       operationId: post-api_auth-refresh_token
       responses:
         '200':
@@ -239,7 +239,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: 문서 정보 조회
       tags: []
       responses:
         '200':
@@ -407,7 +407,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: 문서 상태 조회
       tags: []
       responses:
         '200':
@@ -634,7 +634,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: 문서 히스토리 조회
       tags: []
       responses:
         '200':
@@ -772,173 +772,7 @@ paths:
                         name:
                           type: string
                           description: 파일 명
-              examples:
-                성공시:
-                  value:
-                    - action: doc_create
-                      executor_id: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1554280625464
-                      comment: ''
-                      workflow_step_type: write
-                      workflow_step_name: 휴가신청
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_tempsave
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1554280625475
-                      comment: ''
-                      workflow_step_type: write
-                      workflow_step_name: 휴가신청
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_tempsave
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1554280639296
-                      comment: ''
-                      workflow_step_type: write
-                      workflow_step_name: 휴가신청
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_tempsave
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296532388
-                      comment: ''
-                      workflow_step_type: write
-                      workflow_step_name: 휴가신청
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_request_approval
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296532392
-                      comment: ''
-                      workflow_step_type: approval
-                      workflow_step_name: 팀장 결재
-                      notification:
-                        mail_list: []
-                        push_list:
-                          - recipient_name: 윤승환
-                            device_os: android
-                            device_name: SHW-M480W
-                        sms_list: []
-                    - action: doc_accept_approval
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296583992
-                      comment: ''
-                      workflow_step_type: approval
-                      workflow_step_name: 팀장 결재
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_request_reception
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296584092
-                      comment: ''
-                      workflow_step_type: accept
-                      workflow_step_name: 휴가접수
-                      notification:
-                        mail_list:
-                          - recipient_name: 윤승환
-                            email_address: windy4788@forcs.com
-                            is_attach_pdf: false
-                        push_list:
-                          - recipient_name: 윤승환
-                            device_os: android
-                            device_name: SHW-M480W
-                        sms_list: []
-                    - action: doc_accept_reception
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296680466
-                      comment: ''
-                      workflow_step_type: accept
-                      workflow_step_name: 휴가접수
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_request_approval
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296680564
-                      comment: ''
-                      workflow_step_type: approval
-                      workflow_step_name: 휴가접수결재
-                      notification:
-                        mail_list:
-                          - recipient_name: 윤승환
-                            email_address: windy4788@forcs.com
-                            is_pdf_attached: false
-                        push_list:
-                          - receiver_name: 윤승환
-                            device_os: android
-                            device_name: SHW-M480W
-                        sms_list:
-                          - recipient_name: 윤승환
-                            phone_number: 010-1234-5678
-                            is_pdf_attached: false
-                            sms_type: kakao_notification
-                    - action: doc_accept_approval
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296708782
-                      comment: ''
-                      workflow_step_type: approval
-                      workflow_step_name: 휴가접수결재
-                      notification:
-                        mail_list: []
-                        push_list: []
-                        sms_list: []
-                    - action: doc_complete
-                      executor: windy4788@forcs.com
-                      executor_name: '윤승환 '
-                      execute_date: 1557296708879
-                      comment: ''
-                      workflow_step_type: complete
-                      workflow_step_name: 휴가신청완료
-                      notification:
-                        mail_list:
-                          - recipient_name: 윤승환
-                            email_address: windy4788@forcs.com
-                            is_pdf_attached: false
-                        push_list:
-                          - recipient_name: 윤승환
-                            device_os: android
-                            device_name: SHW-M480W
-                        sms_list:
-                          - recipient_name: 윤승환
-                            phone_number: 010-1234-5678
-                            is_pdf_attached: false
-                            sms_type: kakao_notification
-                      cloud_storages:
-                        - account: windy4788@forcs.com
-                          type: Dropbox
-                          files:
-                            - name: 2019_윤승환 휴가 신청서.pdf
-                            - name: 2019_윤승환 휴가 신청서_감사추적 증명서.pdf
-                        - account: windy4788@forcs.com
-                          type: Google drive
-                          files:
-                            - name: 2019_윤승환 휴가 신청서.pdf
-                            - name: 2019_윤승환 휴가 신청서_감사추적 증명서.pdf
-                      timestamp_files:
-                        - name: 2019_윤승환 휴가 신청서.pdf
-                        - name: 2019_윤승환 휴가 신청서_감사추적 증명서.pdf
+              examples: {}
         '403':
           description: Forbidden
           headers:
@@ -984,7 +818,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: '문서 파일 다운로드(문서 PDF, 감사파일증명 PDF)'
       tags: []
       responses:
         '200':
@@ -1046,7 +880,7 @@ paths:
         in: path
         required: true
     post:
-      summary: ''
+      summary: 문서 작성
       operationId: post-api-forms-FORM_ID-documents
       responses:
         '200':
@@ -1080,6 +914,16 @@ paths:
                     code: '4030001'
                     ErrorMessage: invalid api key
       description: |2-
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1214,7 +1058,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: 문서 첨부 파일 다운로드
       tags: []
       responses:
         '200':
