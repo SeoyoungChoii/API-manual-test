@@ -398,5 +398,232 @@ paths:
           name: access_token
           description: Access token
           required: true
+  '/api/documents/{DOCUMENT_ID}/status':
+    parameters:
+      - schema:
+          type: string
+        name: DOCUMENT_ID
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current_status_seq:
+                    type: integer
+                    description: 현재 수행 상태
+                  status_list:
+                    type: array
+                    description: 문서 상태 목록
+                    items:
+                      type: object
+                      properties:
+                        seq:
+                          type: integer
+                          description: 상태 순서
+                        workflow_step_type:
+                          type: string
+                          description: '워크플로우 단계 타입: write(작성), approval(결제), internal(내부자 처리), external(외부자 처리), complete(완료)'
+                        workflow_step_name:
+                          type: string
+                          description: 워크플로우 단계 명
+                        action:
+                          type: string
+                          description: |-
+                            사용자 행동: doc_create(문서 생성),
+                            doc_tempsave (문서 임시 저장),
+                            doc_request_approval (결재 요청),
+                            doc_accept_approval (결재 승인),
+                            doc_reject_approval (결재 반려),
+                            doc_request_external (외부자 요청),
+                            doc_remind_external (외부자 재 요청),
+                            doc_open_external (외부자 열람),
+                            doc_accept_external (외부자 승인),
+                            doc_reject_external (외부자 반려),
+                            doc_request_internal (내부자 요청),
+                            doc_accept_internal (내부자 승인),
+                            doc_reject_internal (내부자 반려),
+                            doc_tempsave_internal (내부자 임시 저장),
+                            doc_cancel_request (요청 취소),
+                            doc_reject_request (반려 요청),
+                            doc_decline_cancel_request (반려 요청 거절),
+                            doc_delete_request(삭제 요청),
+                            doc_decline_delete_request (삭제 요청 거절),
+                            doc_deleted (문서 삭제),
+                            doc_complete (문서 완료)
+                        sender:
+                          type: object
+                          description: '요청자 이름(id/email/연락처), 요청자 객체(id, name 포함) 정보'
+                          properties:
+                            id:
+                              type: string
+                              description: '요청자 id, 외부자 작성의 경우 id값이 없을 수 있음'
+                            name:
+                              type: string
+                              description: '요청자 명, 외부자 작성의 경우 name 값이 없을 수 있음'
+                        recipient_list:
+                          type: array
+                          description: '수신자 목록으로 수신자는 여러명일 수 있으며 수신자 객체(id, name)정보 포함'
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                description: '수신자 id로 수신자가 외부자 처리 경우 id 값이 이메일 또는 연락처,수신자가 그룹일 경우 id 값이 없을 수 있음.'
+                              name:
+                                type: string
+                                description: 수신자 명
+                        executor:
+                          type: object
+                          description: '수행자 객체(id, name 포함) 정보'
+                          properties:
+                            id:
+                              type: string
+                              description: 수행자 id로 수행자가 외부자일 경우 id 값이 이메일 또는 연락처임
+                            name:
+                              type: string
+                              format: int64
+                              description: 수행자 명
+                        execute_date:
+                          type: integer
+                          format: int64
+                          description: 수행 시간
+                        comment:
+                          type: string
+                          description: 메모
+                        progress:
+                          type: string
+                          description: |-
+                            step_complete(진행완료),
+                            step_skip(스킵),
+                            step_in_process(현재 진행중),
+                            step_stand_by(대기중)
+              examples:
+                성공시:
+                  value:
+                    current_status: 4
+                    status_list:
+                      - seq: 1
+                        workflow_step_type: write
+                        workflow_step_name: 시작
+                        action: doc_create
+                        sender: {}
+                        recipient_list: []
+                        executor:
+                          id: windy4788@forcs.com
+                          name: 윤승환
+                        execute_date: 1556503248076
+                        comment: ''
+                        progress: step_complete
+                      - seq: 2
+                        workflow_step_type: external
+                        workflow_step_name: 외부자 처리
+                        action: doc_accept_external
+                        sender:
+                          id: windy4788@forcs.com
+                          name: 윤승환
+                        recipient_list:
+                          - id: windy4788@nate.com
+                            name: 홍길동
+                        executor:
+                          id: windy4788@nate.com
+                          name: 홍길동
+                        execute_date: 1556503248076
+                        comment: ''
+                        progress: step_complete
+                      - seq: 3
+                        workflow_step_type: external
+                        workflow_step_name: 외부자 처리
+                        action: doc_accept_external
+                        sender:
+                          id: windy4788@forcs.com
+                          name: 윤승환
+                        recipient_list:
+                          - id: 010-8946-0159
+                            name: 유관순
+                        executor:
+                          id: 010-8946-0159
+                          name: 유관순
+                        execute_date: 1556503248076
+                        comment: ''
+                        progress: step_complete
+                      - seq: 4
+                        workflow_step_type: internal
+                        workflow_step_name: 내부자 처리 1
+                        action: ''
+                        sender:
+                          id: windy4788@forcs.com
+                          name: 윤승환
+                        recipient_list:
+                          - id: ''
+                            name: 연구소
+                          - id: windy4788@forcs.com
+                            name: 윤승환
+                        comment: ''
+                        progress: step_in_process
+                      - seq: 5
+                        workflow_step_type: complete
+                        workflow_step_name: 완료
+                        action: ''
+                        sender:
+                          id: windy4788@forcs.com
+                          name: 윤승환
+                        recipient_list: []
+                        executor: {}
+                        execute_date: -1
+                        comment: ''
+                        progress: step_stand_by
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                실패시:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+      operationId: get-api-documents-DOCUMENT_ID-status
+      description: |-
+        문서 상태를 조회합니다.
+        *도메인은 Access Token 발급된 company.api_url 값을 사용해야 합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: access_token
+          description: Access token
+          required: true
 components:
   schemas: {}
