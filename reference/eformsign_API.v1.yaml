@@ -1037,5 +1037,155 @@ paths:
           name: file_type
           description: '다운로드 받을 파일 타입, document, audit_trail (, 구분자로 둘다 사용 가능)'
           required: true
+  '/api/forms/{FORM_ID}/documents':
+    parameters:
+      - schema:
+          type: string
+        name: FORM_ID
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-api-forms-FORM_ID-documents
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                example-1:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+      description: |2-
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         API key를 이용하여 문서를 작성합니다.
+         *도메인은 Access Token 발급된 company.api_url 값을 사용해야 합니다. 
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: access_token
+          description: Member access token
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                form_version:
+                  type: string
+                title:
+                  type: string
+                next_steps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      step_type:
+                        type: string
+                      comment:
+                        type: string
+                      approvers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            user_id:
+                              type: string
+                            user_name:
+                              type: string
+                            code:
+                              type: string
+                            number:
+                              type: string
+                            auth_password:
+                              type: string
+                            auth_valid_time:
+                              type: number
+                            auth_hint:
+                              type: string
+                            type:
+                              type: string
+                form_fields:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      input_form_id:
+                        type: string
+                        description: 문서 내 컴포넌트의 form ID
+                      input_form_value:
+                        type: string
+                        description: 문서 내 컴포넌트에 작성할 데이터
+                group:
+                  type: string
 components:
   schemas: {}
