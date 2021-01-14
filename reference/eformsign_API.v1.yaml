@@ -913,76 +913,8 @@ paths:
                   value:
                     code: '4030001'
                     ErrorMessage: invalid api key
-      description: |2-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         API key를 이용하여 문서를 작성합니다.
+      description: |-
+        API key를 이용하여 문서를 작성합니다.
          *도메인은 Access Token 발급된 company.api_url 값을 사용해야 합니다. 
       parameters:
         - schema:
@@ -1050,6 +982,8 @@ paths:
                         description: 문서 내 컴포넌트에 작성할 데이터
                 group:
                   type: string
+            examples: {}
+        description: ''
   '/api/documents/{DOCUMENT_ID}/download_attach_files':
     parameters:
       - schema:
