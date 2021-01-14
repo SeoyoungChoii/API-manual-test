@@ -1119,6 +1119,22 @@ paths:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
          API key를 이용하여 문서를 작성합니다.
          *도메인은 Access Token 발급된 company.api_url 값을 사용해야 합니다. 
       parameters:
@@ -1187,5 +1203,58 @@ paths:
                         description: 문서 내 컴포넌트에 작성할 데이터
                 group:
                   type: string
+  '/api/documents/{DOCUMENT_ID}/download_attach_files':
+    parameters:
+      - schema:
+          type: string
+        name: DOCUMENT_ID
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/zip
+            Content-disposition:
+              schema:
+                type: string
+              description: '예시 attachment; filename={document_id}.zip;'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                example-1:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
+      operationId: get-api-documents-DOCUMENT_ID-download_attach_files
+      description: 문서의 첨부된 파일을 다운로드합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: access_token
+          description: Access token
 components:
   schemas: {}
