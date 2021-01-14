@@ -280,8 +280,9 @@ paths:
                         type: string
                         description: 문서 생성자 명
                   created_date:
-                    type: string
+                    type: integer
                     description: 문서 생성일
+                    format: int64
                   editor:
                     type: object
                     description: '문서 수정자 객체(id, name 포함) 정보'
@@ -1079,6 +1080,8 @@ paths:
                     code: '4030001'
                     ErrorMessage: invalid api key
       description: |2-
+
+
 
 
 
