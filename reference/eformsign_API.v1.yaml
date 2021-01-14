@@ -648,8 +648,296 @@ paths:
               schema:
                 type: object
                 properties:
-                  '':
+                  action:
                     type: string
+                    description: |-
+                      사용자 수행 동작: doc_create(문서 생성),
+                      doc_tempsave(문서 임시 저장),
+                      doc_request_approval(결재 요청),
+                      doc_accept_approval(결재 승인),
+                      doc_reject_approval(결재 반려),
+                      doc_request_external(외부자 요청),
+                      doc_remind_external(외부자 재 요청),
+                      doc_open_external(외부자 열람),
+                      doc_accept_external(외부자 승인),
+                      doc_reject_external(외부자 반려),
+                      doc_request_internal(내부자 요청),
+                      doc_accept_internal(내부자 승인),
+                      doc_tempsave_internal(내부자 임시 저장),
+                      doc_cancel_request(요청 취소),
+                      doc_decline_cancel_request(반려 요청 거절),
+                      doc_delete_request(삭제 요청),
+                      doc_decline_delete_request(삭제 요청 거절),
+                      doc_deleted(문서 삭제),
+                      doc_complete(문서 완료)
+                  executor_id:
+                    type: string
+                    description: 수행자 id
+                  executor_name:
+                    type: string
+                    description: 수행자 이름
+                  execute_date:
+                    type: integer
+                    description: 수행일
+                    format: int64
+                  comment:
+                    type: string
+                    description: 코멘트
+                  workflow_step_type:
+                    type: string
+                    description: '워크플로우 타입: write(작성), approval(결제), internal(내부자 처리), external(외부자 처리), complete(완료) '
+                  workflow_step_name:
+                    type: string
+                    description: 워크플로우 명
+                  notification:
+                    type: object
+                    description: 알림
+                    properties:
+                      mail_list:
+                        type: array
+                        description: '메일 알림 리스트, mail 객체 포함 (recipient_name, email_address, attach_pdf)'
+                        items:
+                          type: object
+                          properties:
+                            recipient_name:
+                              type: string
+                              description: 수신자 이름
+                            email_address:
+                              type: string
+                              description: 이메일 주소
+                            is_pdf_attached:
+                              type: boolean
+                              description: pdf 첨부 여부
+                      push_list:
+                        type: array
+                        description: '푸시 알림 리스트, push 객체 포함(recipient_name, device_os, device_name)'
+                        items:
+                          type: object
+                          properties:
+                            recipient_name:
+                              type: string
+                              description: 수신자 이름
+                            device_os:
+                              type: string
+                              description: '장비 OS 이름(android, ios)'
+                            device_name:
+                              type: string
+                              description: 장비 이름
+                      sms_list:
+                        type: array
+                        description: 'SMS 알림 리스트, SMS 객체 포함 (receiver_name, phone_number, is_attach_pdf_link)'
+                        items:
+                          type: object
+                          properties:
+                            recipient_name:
+                              type: string
+                              description: 수신자 이름
+                            phone_number:
+                              type: string
+                              description: 수신자 연락처
+                            is_pdf_attached:
+                              type: boolean
+                              description: pdf 다운로드 링크 첨부 여부
+                            type:
+                              type: string
+                              description: 'SMS 타입(sms, kakao_notification, whatsapp)'
+                  cloud_storage_list:
+                    type: array
+                    description: '외부 저장소, 외부 저장소 객체(account, type, files) 포함'
+                    items:
+                      type: object
+                      properties:
+                        account:
+                          type: string
+                          description: 연동 계정
+                        type:
+                          type: string
+                          description: '외부 저장소 타입(Google drive, Dropbox)'
+                        files:
+                          type: array
+                          description: '파일 리스트, 파일 객체(name) 포함'
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                description: 파일 명
+                  timestamp_files:
+                    type: array
+                    description: 'TSA가 적용된 파일, 파일 객체(name) 포함'
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 파일 명
+              examples:
+                성공시:
+                  value:
+                    - action: doc_create
+                      executor_id: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1554280625464
+                      comment: ''
+                      workflow_step_type: write
+                      workflow_step_name: 휴가신청
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_tempsave
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1554280625475
+                      comment: ''
+                      workflow_step_type: write
+                      workflow_step_name: 휴가신청
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_tempsave
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1554280639296
+                      comment: ''
+                      workflow_step_type: write
+                      workflow_step_name: 휴가신청
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_tempsave
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296532388
+                      comment: ''
+                      workflow_step_type: write
+                      workflow_step_name: 휴가신청
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_request_approval
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296532392
+                      comment: ''
+                      workflow_step_type: approval
+                      workflow_step_name: 팀장 결재
+                      notification:
+                        mail_list: []
+                        push_list:
+                          - recipient_name: 윤승환
+                            device_os: android
+                            device_name: SHW-M480W
+                        sms_list: []
+                    - action: doc_accept_approval
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296583992
+                      comment: ''
+                      workflow_step_type: approval
+                      workflow_step_name: 팀장 결재
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_request_reception
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296584092
+                      comment: ''
+                      workflow_step_type: accept
+                      workflow_step_name: 휴가접수
+                      notification:
+                        mail_list:
+                          - recipient_name: 윤승환
+                            email_address: windy4788@forcs.com
+                            is_attach_pdf: false
+                        push_list:
+                          - recipient_name: 윤승환
+                            device_os: android
+                            device_name: SHW-M480W
+                        sms_list: []
+                    - action: doc_accept_reception
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296680466
+                      comment: ''
+                      workflow_step_type: accept
+                      workflow_step_name: 휴가접수
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_request_approval
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296680564
+                      comment: ''
+                      workflow_step_type: approval
+                      workflow_step_name: 휴가접수결재
+                      notification:
+                        mail_list:
+                          - recipient_name: 윤승환
+                            email_address: windy4788@forcs.com
+                            is_pdf_attached: false
+                        push_list:
+                          - receiver_name: 윤승환
+                            device_os: android
+                            device_name: SHW-M480W
+                        sms_list:
+                          - recipient_name: 윤승환
+                            phone_number: 010-1234-5678
+                            is_pdf_attached: false
+                            sms_type: kakao_notification
+                    - action: doc_accept_approval
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296708782
+                      comment: ''
+                      workflow_step_type: approval
+                      workflow_step_name: 휴가접수결재
+                      notification:
+                        mail_list: []
+                        push_list: []
+                        sms_list: []
+                    - action: doc_complete
+                      executor: windy4788@forcs.com
+                      executor_name: '윤승환 '
+                      execute_date: 1557296708879
+                      comment: ''
+                      workflow_step_type: complete
+                      workflow_step_name: 휴가신청완료
+                      notification:
+                        mail_list:
+                          - recipient_name: 윤승환
+                            email_address: windy4788@forcs.com
+                            is_pdf_attached: false
+                        push_list:
+                          - recipient_name: 윤승환
+                            device_os: android
+                            device_name: SHW-M480W
+                        sms_list:
+                          - recipient_name: 윤승환
+                            phone_number: 010-1234-5678
+                            is_pdf_attached: false
+                            sms_type: kakao_notification
+                      cloud_storages:
+                        - account: windy4788@forcs.com
+                          type: Dropbox
+                          files:
+                            - name: 2019_윤승환 휴가 신청서.pdf
+                            - name: 2019_윤승환 휴가 신청서_감사추적 증명서.pdf
+                        - account: windy4788@forcs.com
+                          type: Google drive
+                          files:
+                            - name: 2019_윤승환 휴가 신청서.pdf
+                            - name: 2019_윤승환 휴가 신청서_감사추적 증명서.pdf
+                      timestamp_files:
+                        - name: 2019_윤승환 휴가 신청서.pdf
+                        - name: 2019_윤승환 휴가 신청서_감사추적 증명서.pdf
         '403':
           description: Forbidden
           headers:
@@ -657,6 +945,22 @@ paths:
               schema:
                 type: string
               description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: 에러 코드
+                  ErrorMessage:
+                    type: string
+                    description: 에러 메시지
+              examples:
+                실패시:
+                  value:
+                    code: '4030001'
+                    ErrorMessage: invalid api key
       operationId: get-api-documents-DOCUMENT_ID-histories
       parameters:
         - schema:
