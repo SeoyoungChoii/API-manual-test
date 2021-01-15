@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: Webhook event
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /webhook document event:
+    post:
+      summary: 문서 이벤트 전송
+      operationId: post-webhook-document-event
+      responses:
+        '200':
+          description: OK
+      description: eformsign에서 문서의 생성 또는 상태 변경 발생시 Webhook 설정에 지정된 URL로 이벤트를 전송합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+        - schema:
+            type: string
+          in: header
+          name: eformsign_signature
+          description: 인증용 서명값 (payload를 서명한 값)  (3.1.2 eformsign_signature 검증 참고)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                webhook_id:
+                  type: string
+                  description: 이벤트 발생시킨 webhook_id
+                webhook_name:
+                  type: string
+                  description: webhook 명
+                company_id:
+                  type: string
+                  description: 회사 id
+                event_type:
+                  type: string
+                  description: 이벤트 타입 → int형으로
+                document:
+                  type: object
+                  description: 이벤트가 발생한 문서정보
+                  properties:
+                    id:
+                      type: string
+                      description: 문서 id
+                    template_id:
+                      type: string
+                      description: 템플릿 id
+                    template_name:
+                      type: string
+                      description: 템플릿 명
+                    template_version:
+                      type: string
+                      description: 템플릿 버전
+                    workflow_seq:
+                      type: integer
+                      description: 워크플로우 순서
+                    workflow_name:
+                      type: string
+                      description: 워크플로우 명
+                    history_id:
+                      type: string
+                      description: 히스토리 id
+                    status:
+                      type: string
+                      description: 문서의 상태
+                    editor_id:
+                      type: string
+                      description: 문서 생성자(수정자) id
+                    updated_date:
+                      type: integer
+                      format: int64
+                      description: 문서 생성(수정) 시간
+            examples:
+              example-1:
+                value:
+                  webhook_id: string
+                  webhook_name: string
+                  company_id: string
+                  event_type: string
+                  document:
+                    id: string
+                    template_id: string
+                    template_name: string
+                    template_version: string
+                    workflow_seq: 0
+                    workflow_name: string
+                    history_id: string
+                    status: string
+                    editor_id: string
+                    updated_date: 0
+        description: |-
+          workflow → step
+
+          action 이 필요 → int값으로
+
+          status 는 current_status 임. → int값으로...
+
+          action 이 한 사람이 누구고, 언제 했는지 (editor_id, updated_date가 용어가 이상함, 변경해야 함)
+
+          우리가 정한 text가 나가는 경우는 없어야 함.(int로 대체)
+  /webhook pdf:
+    post:
+      summary: PED 생성 이벤트 전송
+      operationId: post-webhook-pdf
+      responses:
+        '200':
+          description: OK
+      description: eformsign에서 문서의 PDF 파일이 생성될 때 발생 시 Webhook 설정에 지정된 URL로 이벤트를 전송합니다.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+        - schema:
+            type: string
+          in: header
+          name: eformsign_signature
+          description: 인증용 서명값 (payload를 서명한 값)  (3.1.2 eformsign_signature 검증 참고)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                webhook_id:
+                  type: string
+                  description: 이벤트 발생시킨 webhook_id
+                webhook_name:
+                  type: string
+                  description: webhook 명
+                company_id:
+                  type: string
+                  description: 회사 id
+                event_type:
+                  type: string
+                  description: 이벤트 타입
+                ready_document_pdf:
+                  type: object
+                  description: 이벤트가 발생한 문서정보
+                  properties:
+                    document_id:
+                      type: string
+                      description: 문서 id
+                    template_id:
+                      type: string
+                      description: 템플릿 id
+                    template_name:
+                      type: string
+                      description: 템플릿 명
+                    template_version:
+                      type: string
+                      description: 템플릿 버전
+                    workflow_seq:
+                      type: integer
+                      description: 워크플로우 순서
+                    workflow_name:
+                      type: string
+                      description: 워크플로우 명
+                    document_history_id:
+                      type: string
+                      description: 히스토리 id
+                    document_status:
+                      type: string
+                      description: 문서의 상태
+                    export_ready_list:
+                      type: array
+                      description: |-
+                        다운로드 가능한 pdf 타입, 
+                        document : 문서 PDF
+                        audit_trail : 문서의 감사추적 증명서
+                      items: {}
+            examples:
+              example-1:
+                value:
+                  webhook_id: 3fb7c81f9e7f42cea7e65258527ba7fb
+                  webhook_name: test
+                  company_id: db58ff3e116942de951b543f60d66073
+                  event_type: ready_document_pdf
+                  ready_document_pdf:
+                    document_id: c07a9830f61b4cfb924d525040c62062
+                    workflow_seq: 3
+                    workflow_name: 내부자 처리 1
+                    template_id: 39d74bee4c7b4a6ca43c23f2728e60cb
+                    template_name: 표준근로계약서
+                    template_version: '2'
+                    document_status: doc_request_reception
+                    document_history_id: ee2565594d8749b7a9590bace8e3908c
+                    export_ready_list:
+                      - document
+        description: ''
+components:
+  schemas: {}
