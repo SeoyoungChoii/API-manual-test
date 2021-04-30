@@ -408,6 +408,107 @@ paths:
           name: Authorization
           description: Bearer <access_token>
           required: true
+  /api/documents:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    description: 문서 목록 정보
+                    items: {}
+                  id:
+                    type: array
+                    items:
+                      type: string
+                  '':
+                    type: string
+              examples:
+                example-1:
+                  value:
+                    documents:
+                      - null
+                    id:
+                      - string
+                    '': string
+      operationId: get-api-documents
+      description: |-
+        문서의 일반 정보, 상세 정보, 이력, 진행상황 등을 목록으로 조회할 수 있는 API입니다.
+        * 도메인은 Access Token 발급 시 반환되는 api_key.company.api_url 값을 사용해야 합니다. 
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Content-Type
+          description: application/json
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Access token값을 Bearer 토큰으로 사용
+          required: true
+        - schema:
+            type: boolean
+          in: query
+          name: include_fields
+          description: '필드 포함 여부/default는 false, 필요시 true로 요청'
+        - schema:
+            type: boolean
+          in: query
+          name: include_histories
+          description: '문서 이력 포함 여부/default는 false, 필요시 true로 요청'
+        - schema:
+            type: boolean
+          in: query
+          name: include_previous_status
+          description: '이전 단계 정보 포함 여부/default는 false, 필요시 true로 요청'
+        - schema:
+            type: boolean
+          in: query
+          name: include_next_status
+          description: '다음 단계 정보 포함 여부/default는 false, 필요시 true로 요청'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type:
+                - object
+                - string
+              properties:
+                type:
+                  type: string
+                  description: '문서함 타입/01:진행 중, 02:처리할 문서, 03: 완료 문서'
+                title_and_content:
+                  type: string
+                  description: '문서 제목 및 내용에서 검색할 쿼리/입력 시, 검색 결과에 해당하는 문서만 표시'
+                title:
+                  type: string
+                  description: '문서 제목에서 검색할 쿼리/입력 시, 검색 결과에 해당하는 문서만 표시'
+                content:
+                  type: string
+                  description: '문서 내용에서 검색할 쿼리/입력 시, 검색 결과에 해당하는 문서만 표시'
+                limit:
+                  type: string
+                  description: 한 번에 표시할 문서 수/페이징 용
+                skip:
+                  type: string
+                  description: |-
+                    목록에서 건너뛰고 표시할 문서 수
+                    ex) limit을 20으로 설정한 경우, skip = 0 : 1page, 20 : 2page, 40 : 3page와 같이 페이징할 수 있음. limit의 배수가 아니더라도 설정 가능
+        description: ''
 components:
   schemas: {}
   securitySchemes: {}
