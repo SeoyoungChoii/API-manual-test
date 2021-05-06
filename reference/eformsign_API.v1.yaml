@@ -586,6 +586,26 @@ paths:
                         execute_date: -1
                         comment: ''
                         progress: step_stand_by
+                example-2:
+                  value:
+                    current_status_seq: 0
+                    status_list:
+                      - seq: 0
+                        workflow_step_type: string
+                        workflow_step_name: string
+                        action: string
+                        sender:
+                          id: string
+                          name: string
+                        recipient_list:
+                          - id: string
+                            name: string
+                        executor:
+                          id: string
+                          name: string
+                        execute_date: 0
+                        comment: string
+                        progress: string
         '403':
           description: Forbidden
           headers:
